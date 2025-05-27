@@ -1,2 +1,2 @@
 
-web: cd servidor && python -u app.py
+web: python -m servidor.app
