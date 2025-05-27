@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ['python3', 'pip']
-
-[phases.install]
-cmds = ['pip install -r requirements.txt']
-
-[start]
-cmd = 'cd servidor && python app.py'
