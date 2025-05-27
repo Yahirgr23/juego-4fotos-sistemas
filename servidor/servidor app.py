@@ -12,7 +12,7 @@ import string
 
 # Configuración de la aplicación
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'  # Cambiar en producción
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'clave-desarrollo-local-123')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///juego_sistemas.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -136,6 +136,22 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
     decorated.__name__ = f.__name__
     return decorated
+
+# =============================================================================
+# RUTAS BÁSICAS
+# =============================================================================
+
+@app.route('/')
+def home():
+    return jsonify({
+        'message': 'Servidor de Juego 4 Fotos 1 Palabra - Sistemas',
+        'status': 'online',
+        'version': '1.0'
+    })
+
+@app.route('/health')
+def health():
+    return jsonify({'status': 'healthy'})
 
 # =============================================================================
 # RUTAS DE AUTENTICACIÓN
@@ -345,14 +361,18 @@ if __name__ == '__main__':
                 creator_id=admin_user.id,
                 category='base_datos',
                 difficulty='facil',
-                image1_url='https://example.com/tabla.jpg',
-                image2_url='https://example.com/sql.jpg',
-                image3_url='https://example.com/datos.jpg',
-                image4_url='https://example.com/consulta.jpg',
+                image1_url='https://picsum.photos/300/200?random=1',
+                image2_url='https://picsum.photos/300/200?random=2',
+                image3_url='https://picsum.photos/300/200?random=3',
+                image4_url='https://picsum.photos/300/200?random=4',
                 answer='DATABASE',
                 hint='Sistema para almacenar información'
             )
             db.session.add(ejemplo_level)
             db.session.commit()
     
-    socketio.run(app, debug=True, host='0.0.0.0', port=5000)
+    # Configuración para Railway/Heroku
+    port = int(os.environ.get('PORT', 5000))
+    debug_mode = os.environ.get('FLASK_ENV') == 'development'
+    
+    socketio.run(app, debug=debug_mode, host='0.0.0.0', port=port)
