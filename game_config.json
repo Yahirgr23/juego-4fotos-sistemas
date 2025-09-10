@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "last_update": "2025-05-29T17:05:50.395696",
+  "settings": {
+    "theme": "dark",
+    "sound_enabled": true,
+    "auto_save": true,
+    "default_difficulty": "Medio"
+  },
+  "paths": {
+    "custom_levels": "custom_levels",
+    "downloaded_levels": "downloaded_levels",
+    "assets": "assets"
+  }
+}
